@@ -3,6 +3,7 @@ package domain
 import (
 	"gorm.io/gorm"
 	"uv-chat-api-server-golang/domain/message"
+	"uv-chat-api-server-golang/internal/common"
 )
 
 type Repository interface {
@@ -11,10 +12,10 @@ type Repository interface {
 
 type BaseRepository[T ModelWithID] interface {
 	Create(t T) (uint, error)
-	Delete(BaseWhereModel) error
+	Delete(model BaseWhereModel) error
 	Update(model BaseWhereModel, t T) error
-	Get(BaseWhereModel) (T, error)
-	GetList(BaseWhereModel) ([]T, error)
+	Get(model BaseWhereModel) (T, error)
+	GetList(model BaseWhereModel, pagination *common.Pagination, orderBy *common.OrderBy) ([]T, error)
 }
 
 type ModelWithID interface {

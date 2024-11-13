@@ -1,8 +1,12 @@
 package message
 
+import (
+	"uv-chat-api-server-golang/internal/ctx"
+)
+
 type Service interface {
-	Create(msg Message) error
-	Delete(id int) error
-	Get(id int) (Message, error)
-	GetAll() ([]Message, error)
+	Create(ctx ctx.Context, msg Message) error
+	Delete(ctx ctx.Context, id int) error
+	Get(ctx ctx.Context, id int) (Message, error)
+	GetList(ctx ctx.Context, param GetListParam) ([]Message, error)
 }

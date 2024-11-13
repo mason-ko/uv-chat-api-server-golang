@@ -2,6 +2,7 @@ package repository
 
 import (
 	"uv-chat-api-server-golang/domain"
+	"uv-chat-api-server-golang/internal/common"
 )
 
 type baseRepository[T domain.ModelWithID] struct {
@@ -27,9 +28,16 @@ func (b *baseRepository[T]) Get(model domain.BaseWhereModel) (T, error) {
 	return ret, err
 }
 
-func (b *baseRepository[T]) GetList(model domain.BaseWhereModel) ([]T, error) {
+func (b *baseRepository[T]) GetList(model domain.BaseWhereModel, pagination *common.Pagination, orderBy *common.OrderBy) ([]T, error) {
 	var ret []T
-	err := model.SetExpression()(b.external.DB()).Find(&ret).Error
+	db := model.SetExpression()(b.external.DB())
+	if pagination != nil {
+		db = db.Limit(pagination.Limit).Offset(pagination.Offset)
+	}
+	if orderBy != nil {
+		db = db.Order(orderBy.ToClauseOrderBy())
+	}
+	err := db.Find(&ret).Error
 	return ret, err
 }
 
