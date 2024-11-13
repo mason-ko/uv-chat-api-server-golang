@@ -23,7 +23,7 @@ type Config struct {
 }
 
 const (
-	configFilePath = "../config.yaml"
+	configFilePath = "./config.yaml"
 )
 
 func loadConfig() *Config {
