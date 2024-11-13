@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"time"
+	"uv-chat-api-server-golang/domain"
 
 	"github.com/gin-gonic/gin"
 	"go.uber.org/fx"
@@ -19,7 +20,7 @@ var Modules = fx.Options(
 	fx.Invoke(func(*http.Server) {}),
 )
 
-func newRouter() *gin.Engine {
+func newRouter(controller domain.Controller) *gin.Engine {
 	router := gin.Default()
 	router.GET("/", func(c *gin.Context) {
 		c.String(http.StatusOK, "Hello, World!")
@@ -44,7 +45,7 @@ func newServer(lc fx.Lifecycle, router *gin.Engine) *http.Server {
 		},
 		OnStop: func(ctx context.Context) error {
 			// Graceful shutdown with a timeout
-			ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
+			ctx, cancel := context.WithTimeout(ctx, 30*time.Second)
 			defer cancel()
 			fmt.Println("Shutting down server gracefully...")
 			return srv.Shutdown(ctx)

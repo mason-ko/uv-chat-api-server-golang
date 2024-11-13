@@ -11,11 +11,11 @@ var Modules = fx.Options(
 )
 
 type controller struct {
-	servcie domain.Service
+	service domain.Service
 }
 
-func newController(servcie domain.Service) domain.Controller {
+func newController(service domain.Service) domain.Controller {
 	return &controller{
-		servcie: servcie,
+		service: service,
 	}
 }

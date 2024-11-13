@@ -11,8 +11,11 @@ var Modules = fx.Options(
 )
 
 type repository struct {
+	external domain.External
 }
 
-func newRepository() domain.Repository {
-	return &repository{}
+func newRepository(external domain.External) domain.Repository {
+	return &repository{
+		external: external,
+	}
 }
