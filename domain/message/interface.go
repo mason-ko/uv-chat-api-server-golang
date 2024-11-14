@@ -1,12 +1,20 @@
 package message
 
 import (
-	"uv-chat-api-server-golang/internal/ctx"
+	"github.com/gin-gonic/gin"
+	"uv-chat-api-server-golang/internal/appctx"
 )
 
+type Controller interface {
+	Create(ctx *gin.Context)
+	Delete(ctx *gin.Context)
+	Get(ctx *gin.Context)
+	GetList(ctx *gin.Context)
+}
+
 type Service interface {
-	Create(ctx ctx.Context, msg Message) error
-	Delete(ctx ctx.Context, id uint) error
-	Get(ctx ctx.Context, id uint) (Message, error)
-	GetList(ctx ctx.Context, param GetListParam) ([]Message, error)
+	Create(ctx appctx.Context, msg Message) error
+	Delete(ctx appctx.Context, id uint) error
+	Get(ctx appctx.Context, id uint) (Message, error)
+	GetList(ctx appctx.Context, param GetListParam) ([]Message, error)
 }

@@ -3,13 +3,11 @@ package router
 import (
 	"context"
 	"fmt"
+	"github.com/gin-gonic/gin"
+	"go.uber.org/fx"
 	"log"
 	"net/http"
 	"time"
-	"uv-chat-api-server-golang/domain"
-
-	"github.com/gin-gonic/gin"
-	"go.uber.org/fx"
 )
 
 var Modules = fx.Options(
@@ -18,13 +16,11 @@ var Modules = fx.Options(
 		newServer,
 	),
 	fx.Invoke(func(*http.Server) {}),
+	fx.Invoke(registerMessageRouter),
 )
 
-func newRouter(controller domain.Controller) *gin.Engine {
+func newRouter() *gin.Engine {
 	router := gin.Default()
-	router.GET("/", func(c *gin.Context) {
-		c.String(http.StatusOK, "Hello, World!")
-	})
 	return router
 }
 
