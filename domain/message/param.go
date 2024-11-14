@@ -5,12 +5,17 @@ import (
 	"uv-chat-api-server-golang/internal/common"
 )
 
-type MessageParam struct {
+type DBMessageParam struct {
+	ID        uint
 	ChannelID uint `json:"channel_id"`
 }
 
-func (p *MessageParam) SetExpression() func(tx *gorm.DB) *gorm.DB {
+func (p *DBMessageParam) SetExpression() func(tx *gorm.DB) *gorm.DB {
 	return func(tx *gorm.DB) *gorm.DB {
+		if p.ID != 0 {
+			tx = tx.Where("id = ?", p.ID)
+		}
+
 		if p.ChannelID != 0 {
 			tx = tx.Where("channel_id = ?", p.ChannelID)
 		}

@@ -37,11 +37,17 @@ func (b *baseRepository[T]) GetList(model domain.BaseWhereModel, pagination *com
 	if orderBy != nil {
 		db = db.Order(orderBy.ToClauseOrderBy())
 	}
+
 	err := db.Find(&ret).Error
 	return ret, err
 }
 
 func newBaseRepository[T domain.ModelWithID](external domain.External) domain.BaseRepository[T] {
+	err := external.DB().AutoMigrate(new(T))
+	if err != nil {
+		panic(err)
+	}
+
 	return &baseRepository[T]{
 		external: external,
 	}

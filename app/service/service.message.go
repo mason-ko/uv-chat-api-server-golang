@@ -1,6 +1,7 @@
 package service
 
 import (
+	"github.com/samber/lo"
 	"uv-chat-api-server-golang/domain"
 	"uv-chat-api-server-golang/domain/message"
 	"uv-chat-api-server-golang/internal/ctx"
@@ -11,23 +12,35 @@ type messageService struct {
 }
 
 func (m *messageService) Create(ctx ctx.Context, msg message.Message) error {
-	//TODO implement me
-	panic("implement me")
+	_, err := m.repository.MessageRepository().Create(msg.DBModel())
+	return err
 }
 
-func (m *messageService) Delete(ctx ctx.Context, id int) error {
-	//TODO implement me
-	panic("implement me")
+func (m *messageService) Delete(ctx ctx.Context, id uint) error {
+	err := m.repository.MessageRepository().Delete(&message.DBMessageParam{
+		ID: id,
+	})
+	return err
 }
 
-func (m *messageService) Get(ctx ctx.Context, id int) (message.Message, error) {
-	//TODO implement me
-	panic("implement me")
+func (m *messageService) Get(ctx ctx.Context, id uint) (message.Message, error) {
+	msg, err := m.repository.MessageRepository().Get(&message.DBMessageParam{
+		ID: id,
+	})
+	if err != nil {
+		return message.Message{}, err
+	}
+	return msg.Message(), nil
 }
 
 func (m *messageService) GetList(ctx ctx.Context, param message.GetListParam) ([]message.Message, error) {
-	//TODO implement me
-	panic("implement me")
+	list, err := m.repository.MessageRepository().GetList(&message.DBMessageParam{}, param.Pagination, param.OrderBy)
+	if err != nil {
+		return nil, err
+	}
+	return lo.Map(list, func(item message.DBMessage, index int) message.Message {
+		return item.Message()
+	}), nil
 }
 
 func newMessageService(repository domain.Repository) message.Service {

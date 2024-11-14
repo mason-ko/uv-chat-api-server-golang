@@ -7,7 +7,7 @@ import (
 )
 
 type Repository interface {
-	MessageRepository() BaseRepository[message.Message]
+	MessageRepository() BaseRepository[message.DBMessage]
 }
 
 type BaseRepository[T ModelWithID] interface {

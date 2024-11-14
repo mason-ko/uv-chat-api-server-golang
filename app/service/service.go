@@ -23,6 +23,7 @@ func (s *service) MessageService() message.Service {
 
 func newService(repository domain.Repository) domain.Service {
 	return &service{
-		repository: repository,
+		repository:     repository,
+		messageService: newMessageService(repository),
 	}
 }

@@ -14,16 +14,16 @@ var Modules = fx.Options(
 type repository struct {
 	external domain.External
 
-	messageRepository domain.BaseRepository[message.Message]
+	messageRepository domain.BaseRepository[message.DBMessage]
 }
 
-func (r *repository) MessageRepository() domain.BaseRepository[message.Message] {
+func (r *repository) MessageRepository() domain.BaseRepository[message.DBMessage] {
 	return r.messageRepository
 }
 
 func newRepository(external domain.External) domain.Repository {
 	return &repository{
 		external:          external,
-		messageRepository: newBaseRepository[message.Message](external),
+		messageRepository: newBaseRepository[message.DBMessage](external),
 	}
 }
