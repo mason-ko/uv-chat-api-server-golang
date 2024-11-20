@@ -17,6 +17,8 @@ var Modules = fx.Options(
 	),
 	fx.Invoke(func(*http.Server) {}),
 	fx.Invoke(registerMessageRouter),
+	fx.Invoke(registerChannelRouter),
+	fx.Invoke(registerUserRouter),
 )
 
 func newRouter() *gin.Engine {
