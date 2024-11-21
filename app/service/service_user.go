@@ -13,6 +13,13 @@ type userService struct {
 }
 
 func (m *userService) Create(ctx appctx.Context, msg user.User) error {
+	if msg.ID != 0 {
+		_, err := m.Get(ctx, msg.ID)
+		if err == nil {
+			return nil
+		}
+	}
+
 	_, err := m.repository.UserRepository().Create(msg.DBModel())
 	return err
 }

@@ -8,7 +8,7 @@ import (
 func registerChannelRouter(router *gin.Engine, controller domain.Controller) {
 	g := router.Group("/api/channels")
 	g.GET("/:id", controller.ChannelController().Get)
-	g.GET("/", controller.ChannelController().GetList)
+	g.GET("", controller.ChannelController().GetList)
 	g.DELETE("/:id", controller.ChannelController().Delete)
-	g.POST("/", controller.ChannelController().Create)
+	g.POST("", controller.ChannelController().Create)
 }

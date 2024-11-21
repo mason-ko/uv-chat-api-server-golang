@@ -7,5 +7,6 @@ import (
 
 func registerUserRouter(router *gin.Engine, controller domain.Controller) {
 	g := router.Group("/api/users")
-	g.POST("/", controller.MessageController().Create)
+	g.POST("", controller.UserController().Create)
+	g.GET("", controller.UserController().GetList)
 }

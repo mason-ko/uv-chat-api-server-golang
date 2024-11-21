@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"time"
+	"uv-chat-api-server-golang/internal/middleware"
 )
 
 var Modules = fx.Options(
@@ -23,6 +24,7 @@ var Modules = fx.Options(
 
 func newRouter() *gin.Engine {
 	router := gin.Default()
+	router.Use(middleware.EnableCorsSetting())
 	return router
 }
 
