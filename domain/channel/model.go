@@ -3,12 +3,12 @@ package channel
 import "gorm.io/gorm"
 
 type Channel struct {
-	ID uint
+	ID uint `json:"id"`
 
-	Name        string `gorm:"type:(m *messageController)(100);not null;unique"` // 채널 이름
-	Description string `gorm:"type:text"`                                        // 채널 설명
-	IsPrivate   bool   `gorm:"default:false"`                                    // 비공개 채널 여부
-	LastContent string `gorm:"type:text"`                                        // 마지막 content
+	Name        string `json:"name" gorm:"type:(m *messageController)(100);not null;unique"` // 채널 이름
+	Description string `json:"description" gorm:"type:text"`                                 // 채널 설명
+	IsPrivate   bool   `json:"isPrivate" gorm:"default:false"`                               // 비공개 채널 여부
+	LastContent string `json:"lastContent" gorm:"type:text"`                                 // 마지막 content
 }
 
 func (m Channel) DBModel() DBChannel {

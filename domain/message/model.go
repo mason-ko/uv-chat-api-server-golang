@@ -6,14 +6,14 @@ import (
 )
 
 type Message struct {
-	ID                uint
-	ChannelID         uint
-	UserID            uint
-	Content           string
-	TranslatedContent string
+	ID                uint   `json:"id"`
+	ChannelID         uint   `json:"channelID"`
+	UserID            uint   `json:"userID"`
+	Content           string `json:"content"`
+	TranslatedContent string `json:"translatedContent"`
 
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	CreatedAt time.Time `json:"createdAt"`
+	UpdatedAt time.Time `json:"updatedAt"`
 }
 
 func (m Message) DBModel() DBMessage {

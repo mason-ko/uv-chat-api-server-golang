@@ -5,10 +5,10 @@ import (
 )
 
 type User struct {
-	ID uint
+	ID uint `json:"id"`
 
-	Name    string
-	Country string
+	Name    string `json:"name"`
+	Country string `json:"country"`
 }
 
 func (m User) DBModel() DBUser {
