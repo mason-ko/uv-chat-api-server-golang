@@ -14,6 +14,6 @@ type Context struct {
 func NewContext(ctx *gin.Context) Context {
 	return Context{
 		Context: ctx.Request.Context(),
-		//UserID: 추후
+		//UserIDs: 추후
 	}
 }

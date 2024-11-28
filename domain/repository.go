@@ -12,6 +12,7 @@ type Repository interface {
 	MessageRepository() BaseRepository[message.DBMessage]
 	UserRepository() BaseRepository[user.DBUser]
 	ChannelRepository() BaseRepository[channel.DBChannel]
+	ChannelUsersRepository() BaseRepository[channel.DBChannelUsers]
 }
 
 type BaseRepository[T ModelWithID] interface {

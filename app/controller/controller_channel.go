@@ -15,12 +15,12 @@ type channelController struct {
 
 // 메시지 생성
 func (m *channelController) Create(ctx *gin.Context) {
-	var messageDTO channel.Channel
-	if err := ctx.ShouldBindJSON(&messageDTO); err != nil {
+	var req channel.ReqCreateChannel
+	if err := ctx.ShouldBindJSON(&req); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	err := m.service.ChannelService().Create(appctx.NewContext(ctx), messageDTO)
+	chId, err := m.service.ChannelService().Create(appctx.NewContext(ctx), req)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

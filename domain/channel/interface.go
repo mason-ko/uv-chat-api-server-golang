@@ -13,7 +13,7 @@ type Controller interface {
 }
 
 type Service interface {
-	Create(ctx appctx.Context, ch Channel) error
+	Create(ctx appctx.Context, ch ReqCreateChannel) (uint, error)
 	Delete(ctx appctx.Context, id uint) error
 	Get(ctx appctx.Context, id uint) (Channel, error)
 	GetList(ctx appctx.Context, param GetListParam) ([]Channel, error)

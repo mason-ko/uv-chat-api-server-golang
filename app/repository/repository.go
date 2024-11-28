@@ -16,9 +16,10 @@ var Modules = fx.Options(
 type repository struct {
 	external domain.External
 
-	messageRepository domain.BaseRepository[message.DBMessage]
-	userRepository    domain.BaseRepository[user.DBUser]
-	channelRepository domain.BaseRepository[channel.DBChannel]
+	messageRepository      domain.BaseRepository[message.DBMessage]
+	userRepository         domain.BaseRepository[user.DBUser]
+	channelRepository      domain.BaseRepository[channel.DBChannel]
+	channelUsersRepository domain.BaseRepository[channel.DBChannelUsers]
 }
 
 func (r *repository) UserRepository() domain.BaseRepository[user.DBUser] {
@@ -35,9 +36,10 @@ func (r *repository) MessageRepository() domain.BaseRepository[message.DBMessage
 
 func newRepository(external domain.External) domain.Repository {
 	return &repository{
-		external:          external,
-		messageRepository: newBaseRepository[message.DBMessage](external),
-		userRepository:    newBaseRepository[user.DBUser](external),
-		channelRepository: newBaseRepository[channel.DBChannel](external),
+		external:               external,
+		messageRepository:      newBaseRepository[message.DBMessage](external),
+		userRepository:         newBaseRepository[user.DBUser](external),
+		channelRepository:      newBaseRepository[channel.DBChannel](external),
+		channelUsersRepository: newBaseRepository[channel.DBChannelUsers](external),
 	}
 }

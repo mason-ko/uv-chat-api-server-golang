@@ -42,3 +42,19 @@ func (m DBChannel) Channel() Channel {
 		LastContent: m.LastContent,
 	}
 }
+
+type DBChannelUsers struct {
+	gorm.Model
+
+	ChannelID uint `gorm:"unique"`
+	UserID    uint `gorm:"unique"`
+}
+
+func (m DBChannelUsers) GetID() uint {
+	return m.ID
+}
+
+type ReqCreateChannel struct {
+	UserID       int `json:"userId" binding:"required"`
+	TargetUserID int `json:"targetUserId" binding:"required"`
+}
