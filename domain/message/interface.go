@@ -13,7 +13,7 @@ type Controller interface {
 }
 
 type Service interface {
-	Create(ctx appctx.Context, msg Message) error
+	Create(ctx appctx.Context, msg ReqCreateMessage) error
 	Delete(ctx appctx.Context, id uint) error
 	Get(ctx appctx.Context, id uint) (Message, error)
 	GetList(ctx appctx.Context, param GetListParam) ([]Message, error)

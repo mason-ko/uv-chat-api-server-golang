@@ -22,6 +22,10 @@ type repository struct {
 	channelUsersRepository domain.BaseRepository[channel.DBChannelUsers]
 }
 
+func (r *repository) ChannelUsersRepository() domain.BaseRepository[channel.DBChannelUsers] {
+	return r.channelUsersRepository
+}
+
 func (r *repository) UserRepository() domain.BaseRepository[user.DBUser] {
 	return r.userRepository
 }

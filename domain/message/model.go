@@ -49,3 +49,9 @@ func (m DBMessage) Message() Message {
 		UpdatedAt:         m.UpdatedAt,
 	}
 }
+
+type ReqCreateMessage struct {
+	ChannelID uint   `json:"channelId"`
+	Content   string `json:"content"`
+	UserID    uint   `json:"userId"`
+}

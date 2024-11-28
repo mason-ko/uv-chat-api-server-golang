@@ -16,7 +16,10 @@ func (m *userService) Create(ctx appctx.Context, msg user.User) error {
 	if msg.ID != 0 {
 		_, err := m.Get(ctx, msg.ID)
 		if err == nil {
-			return nil
+			//update
+			return m.repository.UserRepository().Update(&user.DBUserParam{
+				ID: msg.ID,
+			}, msg.DBModel())
 		}
 	}
 

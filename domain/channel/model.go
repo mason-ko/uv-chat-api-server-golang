@@ -46,8 +46,8 @@ func (m DBChannel) Channel() Channel {
 type DBChannelUsers struct {
 	gorm.Model
 
-	ChannelID uint `gorm:"unique"`
-	UserID    uint `gorm:"unique"`
+	ChannelID uint `gorm:"index:idx_channel_user,unique"`
+	UserID    uint `gorm:"index:idx_channel_user,unique"`
 }
 
 func (m DBChannelUsers) GetID() uint {

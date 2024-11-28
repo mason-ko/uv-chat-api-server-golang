@@ -15,12 +15,12 @@ type messageController struct {
 
 // 메시지 생성
 func (m *messageController) Create(ctx *gin.Context) {
-	var messageDTO message.Message
-	if err := ctx.ShouldBindJSON(&messageDTO); err != nil {
+	var req message.ReqCreateMessage
+	if err := ctx.ShouldBindJSON(&req); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	err := m.service.MessageService().Create(appctx.NewContext(ctx), messageDTO)
+	err := m.service.MessageService().Create(appctx.NewContext(ctx), req)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

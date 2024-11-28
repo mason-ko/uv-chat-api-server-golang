@@ -26,7 +26,7 @@ func (m *channelController) Create(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"message": "Message created successfully"})
+	ctx.JSON(http.StatusOK, gin.H{"channelId": chId})
 }
 
 // 메시지 삭제

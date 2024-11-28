@@ -3,16 +3,45 @@ package service
 import (
 	"github.com/samber/lo"
 	"uv-chat-api-server-golang/domain"
+	"uv-chat-api-server-golang/domain/channel"
 	"uv-chat-api-server-golang/domain/message"
+	"uv-chat-api-server-golang/domain/user"
 	"uv-chat-api-server-golang/internal/appctx"
+	"uv-chat-api-server-golang/internal/util"
 )
 
 type messageService struct {
 	repository domain.Repository
 }
 
-func (m *messageService) Create(ctx appctx.Context, msg message.Message) error {
-	_, err := m.repository.MessageRepository().Create(msg.DBModel())
+func (m *messageService) Create(ctx appctx.Context, req message.ReqCreateMessage) error {
+	// 해당 채널의 다른 user 정보 찾음
+	chUsers, err := m.repository.ChannelUsersRepository().GetList(&channel.ChannelUsersParam{
+		ChannelID: req.ChannelID,
+	}, nil, nil)
+	if err != nil {
+		return err
+	}
+	var otherUserID uint
+	for _, user := range chUsers {
+		if user.UserID != req.UserID {
+			otherUserID = user.UserID
+		}
+	}
+	// 해당 국가 정보로 api 발송
+	otherUser, err := m.repository.UserRepository().Get(&user.DBUserParam{ID: otherUserID})
+	if err != nil {
+		return err
+	}
+
+	//SendTranslateHttp
+	translatedContent := util.SendTranslateHttp(req.Content, otherUser.Country)
+	_, err = m.repository.MessageRepository().Create(message.DBMessage{
+		ChannelID:         req.ChannelID,
+		UserID:            req.UserID,
+		Content:           req.Content,
+		TranslatedContent: translatedContent,
+	})
 	return err
 }
 
