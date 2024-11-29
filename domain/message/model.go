@@ -7,8 +7,8 @@ import (
 
 type Message struct {
 	ID                uint   `json:"id"`
-	ChannelID         uint   `json:"channelID"`
-	UserID            uint   `json:"userID"`
+	ChannelID         uint   `json:"channelId"`
+	UserID            uint   `json:"userId"`
 	Content           string `json:"content"`
 	TranslatedContent string `json:"translatedContent"`
 

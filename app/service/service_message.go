@@ -4,6 +4,7 @@ import (
 	"github.com/go-redis/redis/v8"
 	"github.com/samber/lo"
 	"strconv"
+	"time"
 	"uv-chat-api-server-golang/domain"
 	"uv-chat-api-server-golang/domain/channel"
 	"uv-chat-api-server-golang/domain/message"
@@ -46,7 +47,12 @@ func (m *messageService) Create(ctx appctx.Context, req message.ReqCreateMessage
 		Content:           req.Content,
 		TranslatedContent: translatedContent,
 	}
-	_, err = m.repository.MessageRepository().Create(dbMsg)
+	id, err := m.repository.MessageRepository().Create(dbMsg)
+	if err != nil {
+		return err
+	}
+	dbMsg.ID = id
+	dbMsg.CreatedAt = time.Now()
 
 	// send socket
 	util.SendSocketMessage(m.redisClient, []string{"channel:" + strconv.Itoa(int(req.ChannelID))}, "create_message", dbMsg.Message())
