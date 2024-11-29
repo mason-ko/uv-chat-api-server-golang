@@ -1,6 +1,7 @@
 package external
 
 import (
+	"github.com/go-redis/redis/v8"
 	"uv-chat-api-server-golang/domain"
 	"uv-chat-api-server-golang/internal/config"
 
@@ -13,7 +14,12 @@ var Modules = fx.Options(
 )
 
 type external struct {
-	db *gorm.DB
+	db          *gorm.DB
+	redisClient *redis.Client
+}
+
+func (e *external) RedisClient() *redis.Client {
+	return e.redisClient
 }
 
 // DB implements domain.External.
@@ -22,5 +28,8 @@ func (e *external) DB() *gorm.DB {
 }
 
 func newExternal(config *config.Config) domain.External {
-	return &external{db: mustDB(config)}
+	return &external{
+		db:          mustDB(config),
+		redisClient: mustRedis(config),
+	}
 }

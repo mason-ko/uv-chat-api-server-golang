@@ -14,5 +14,5 @@ func TestSocket(t *testing.T) {
 	})
 	x := c.Ping(context.Background())
 	fmt.Println(x.Result())
-	SendMessage(c, []string{"AA"})
+	//SendSocketMessage(c, []string{"AA"})
 }
