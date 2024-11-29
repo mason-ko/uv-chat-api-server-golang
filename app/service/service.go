@@ -33,10 +33,10 @@ func (s *service) MessageService() message.Service {
 	return s.messageService
 }
 
-func newService(repository domain.Repository) domain.Service {
+func newService(repository domain.Repository, external domain.External) domain.Service {
 	return &service{
 		repository:     repository,
-		messageService: newMessageService(repository),
+		messageService: newMessageService(repository, external),
 		userService:    newUserService(repository),
 		channelService: newChannelService(repository),
 	}

@@ -7,17 +7,15 @@ import (
 	"log"
 )
 
-func SendMessage(client *redis.Client, rooms []string) {
-	data := []interface{}{
+func SendSocketMessage(client *redis.Client, rooms []string, event string, data interface{}) {
+	msg := []interface{}{
 		999,
 		map[string]interface{}{
 			"nsp":  "/",
 			"type": 2,
 			"data": []interface{}{
-				"channel_message", // type
-				map[string]interface{}{
-					"data": "AA",
-				},
+				event, // type
+				data,
 			},
 		},
 		map[string]interface{}{
@@ -25,13 +23,13 @@ func SendMessage(client *redis.Client, rooms []string) {
 		},
 	}
 
-	remoteJoinMessage, err := msgpack.Marshal(data)
+	sendMessage, err := msgpack.Marshal(msg)
 	if err != nil {
 		log.Fatalf("Failed to marshal remoteJoin message with msgpack: %v", err)
 	}
 
 	channelName := "socket.io#/#"
-	err = client.Publish(context.Background(), channelName, remoteJoinMessage).Err()
+	err = client.Publish(context.Background(), channelName, sendMessage).Err()
 	if err != nil {
 		log.Fatalf("Failed to publish remoteJoin message: %v", err)
 	}

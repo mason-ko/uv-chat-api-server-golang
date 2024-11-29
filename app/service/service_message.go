@@ -1,7 +1,9 @@
 package service
 
 import (
+	"github.com/go-redis/redis/v8"
 	"github.com/samber/lo"
+	"strconv"
 	"uv-chat-api-server-golang/domain"
 	"uv-chat-api-server-golang/domain/channel"
 	"uv-chat-api-server-golang/domain/message"
@@ -12,6 +14,8 @@ import (
 
 type messageService struct {
 	repository domain.Repository
+
+	redisClient *redis.Client
 }
 
 func (m *messageService) Create(ctx appctx.Context, req message.ReqCreateMessage) error {
@@ -36,12 +40,17 @@ func (m *messageService) Create(ctx appctx.Context, req message.ReqCreateMessage
 
 	//SendTranslateHttp
 	translatedContent := util.SendTranslateHttp(req.Content, otherUser.Country)
-	_, err = m.repository.MessageRepository().Create(message.DBMessage{
+	dbMsg := message.DBMessage{
 		ChannelID:         req.ChannelID,
 		UserID:            req.UserID,
 		Content:           req.Content,
 		TranslatedContent: translatedContent,
-	})
+	}
+	_, err = m.repository.MessageRepository().Create(dbMsg)
+
+	// send socket
+	util.SendSocketMessage(m.redisClient, []string{"channel:" + strconv.Itoa(int(req.ChannelID))}, "create_message", dbMsg.Message())
+
 	return err
 }
 
@@ -72,8 +81,9 @@ func (m *messageService) GetList(ctx appctx.Context, param message.GetListParam)
 	}), nil
 }
 
-func newMessageService(repository domain.Repository) message.Service {
+func newMessageService(repository domain.Repository, external domain.External) message.Service {
 	return &messageService{
-		repository: repository,
+		repository:  repository,
+		redisClient: external.RedisClient(),
 	}
 }
